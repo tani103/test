@@ -1,0 +1,50 @@
+﻿@model QuestionManager.Models.questions
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>questions</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.question)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.question)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Answer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Answer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Isdelete)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Isdelete)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.subjects.SubjectName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.subjects.SubjectName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.QuestionID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

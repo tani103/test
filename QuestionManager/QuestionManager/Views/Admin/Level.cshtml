@@ -1,0 +1,77 @@
+﻿
+@{
+    ViewBag.Title = "IF E-Learningシステム";
+}
+
+<body>
+    <div id="main" class="page">
+        <h2>課題受験回数</h2>
+        課題ごとに、合格に有した受験回数の平均値をグラフに表します。
+        <br />
+        @using (Html.BeginForm())
+        {
+            @Html.TextBox("first", ViewData["FirstYear"], new { style = "width:40px" })
+
+            @:年から @Html.TextBox("final", ViewData["FinalYear"], new { style = "width:40px" })
+            @:年に作成されたアカウントのデータを表示<input type="submit" name="submit" value="更新" />
+        }
+
+        <p>
+            <ul>
+                @{ List<QuestionManager.Models.Categories> s = (List<QuestionManager.Models.Categories>)ViewData["categories"]; }
+                @for (int j = 0; j < s.Count; j++)
+                {
+                    <li>
+                        @Html.ActionLink(s[j].CategoryName, "Level", new { categoryID = s[j].CategoryID })
+                    </li>
+                }
+            </ul>
+        </p>
+        <br />
+        <br />
+        @if (Model[0].AverageChallengeTimes == 0)
+        {
+            <h3>
+                データがないか、合格者がいません。
+            </h3>
+            return;
+        }
+        <table class="highchart" data-graph-container=".highchart-container" data-graph-type="column"
+               style="display: none">
+            <thead>
+                <tr>
+                    <th>
+                        課題名
+                    </th>
+                    <th>
+                        受験回数
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.SubjectName
+                        </td>
+                        <td>
+                            @String.Format("{0:F}", item.AverageChallengeTimes)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="highchart-container">
+        </div>
+        @section Scripts{
+            <script src="~/Scripts/highcharts.js" type="text/javascript"></script>
+            <script src="~/Scripts/jquery.highchartTable-min.js" type="text/javascript"></script>
+            <script>
+                $(document).ready(function () {
+                    $('table.highchart').highchartTable();
+                });
+            </script>
+        }
+    </div>
+</body>

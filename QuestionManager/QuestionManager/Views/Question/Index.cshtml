@@ -1,0 +1,55 @@
+﻿@model IEnumerable<QuestionManager.Models.index>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>問題</title>
+</head>
+<body>
+    <div class="page">
+        <div id="main">
+            <h2>問題</h2>
+            <table style="font-size:inherit;">
+                <tr>
+                    <th></th>
+                    <th>
+                        課題名
+                    </th>
+                    <th>
+                        問題
+                    </th>
+                    <th>
+                        正解
+                    </th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td width="60" height="50">
+                            @Html.ActionLink("編集", "Edit", new { id = item.QuestionID })|
+                            @Html.ActionLink("削除", "Delete", new { id = item.QuestionID })
+                        </td>
+                        <td width="150">
+                            @Html.DisplayFor(modelItem => item.SubjectName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.question)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Answer)
+                        </td>
+                    </tr>
+                }
+            </table>
+            <p>
+                @Html.ActionLink("追加", "Create")
+            </p>
+            <div id="footer">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

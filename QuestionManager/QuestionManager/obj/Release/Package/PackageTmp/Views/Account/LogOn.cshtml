@@ -1,0 +1,57 @@
+﻿@model QuestionManager.Models.LoginViewModel
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ログオン</title>
+</head>
+<body>
+    <div class="page">
+        <div id="main">
+            <h2>ログオン</h2>
+            <p>ユーザー名とパスワードを入力してください。</p>
+
+            @using (Html.BeginForm())
+            {
+                @Html.ValidationSummary(true, "ログインに失敗しました。エラーを修正し、再試行してください。")
+
+                @*これは消さない*@
+                @Html.AntiForgeryToken()
+                <div>
+                    <fieldset>
+                        <legend>アカウント情報</legend>
+                        <div class="editor-label">
+                            @Html.LabelFor(m => m.Email)
+                        </div>
+
+                        <div class="editor-field">
+                            @*テキストボックス生成*@
+                            @Html.EditorFor(m => m.Email)
+                            @Html.ValidationMessageFor(m => m.Email)
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.LabelFor(m => m.Password)
+                        </div>
+                        <div class="editor-field">
+                            @Html.PasswordFor(m => m.Password)
+                            @Html.ValidationMessageFor(m => m.Password)
+                        </div>
+
+                        <div class="editor-label">
+                            @Html.CheckBoxFor(m => m.RememberMe)
+                            @Html.LabelFor(m => m.RememberMe)
+                        </div>
+
+                        <p>
+                            <input type="submit" value="ログオン" />
+                        </p>
+                    </fieldset>
+                </div>
+                <div id="footer">
+                </div>
+            }
+        </div>
+    </div>
+</body>
+</html>

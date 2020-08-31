@@ -1,0 +1,70 @@
+﻿@model QuestionManager.Models.AdminModels.DisplayAdminIndex
+@{
+    ViewBag.Title = "IF E-Learningシステム";
+}
+
+<body>
+    <div id="main" class="page">
+
+        <h2>未合格者一覧</h2>
+
+
+        @if (Model != null)
+        {
+            <ul>
+                @foreach (var name in Model.Categories.AllCategoryNameList)
+                {
+                    <li>@Html.ActionLink(name.CategoryName, "Index", new { categoryID = name.CategoryID })</li>
+                }
+            </ul>
+
+            <table border="1" bordercolor="#333333">
+                <tr>
+                    <th>受験者</th>
+                    @foreach (string subName in Model.Categories.SubjectNames)
+                    {
+                        <th>@subName</th>
+                    }
+                </tr>
+                <tbody>
+                    @foreach (var user in Model.UserData)
+                    {
+                        <tr>
+                            <td bgcolor="#ffffff">@Html.ActionLink(user.UserName, "UserSummary", new { userID = user.UserID.ToString(), userName = user.UserName, categoryID = ViewData["cID"] })</td>
+                            @foreach (var userProgress in user.ProgressLists)
+                            {
+                                string displayData = string.Empty;
+                                if (userProgress.IsPass)
+                                {
+                                    displayData = userProgress.ChallengeTime.ToString() + "回目/合格";
+                                }
+                                else if (userProgress.ChallengeTime != 0)
+                                {
+                                    displayData = userProgress.ChallengeTime.ToString() + "回目/不合格";
+                                }
+                                else
+                                {
+                                    displayData = "-";
+                                }
+
+
+                                if (userProgress.TestDay.Date == DateTime.Now.Date && displayData != "-")
+                                {
+                                    <td bgcolor="#ffd700">@displayData</td>
+                                }
+                                else
+                                {
+                                    <td bgcolor="#ffffff">@displayData</td>
+                                }
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p> データがありません </p>
+        }
+    </div>
+</body>

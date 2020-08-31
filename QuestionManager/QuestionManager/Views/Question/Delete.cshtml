@@ -1,0 +1,52 @@
+﻿@model QuestionManager.Models.questions
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>問題削除</title>
+</head>
+<body>
+    <div class="page">
+        <div id="main">
+            <h2>問題削除</h2>
+            <h3>削除しますか？</h3>
+            <fieldset>
+                <div class="display-label">
+                    課題名
+                </div>
+                <div class="display-field">
+                    @Html.DisplayFor(model => model.subjects.SubjectName)
+                </div>
+
+                <div class="display-label">
+                    問題
+                </div>
+                <div class="display-field">
+                    @Html.DisplayFor(model => model.question)
+                </div>
+
+                <div class="display-label">
+                    正解
+                </div>
+                <div class="display-field">
+                    @Html.DisplayFor(model => model.Answer)
+                </div>
+            </fieldset>
+
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <p>
+                    <input type="submit" value="削除" class="btn btn-default" /> |
+                    @Html.ActionLink("戻る", "Index")
+                </p>
+            }
+            <div id="footer">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

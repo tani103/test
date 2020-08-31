@@ -1,0 +1,139 @@
+﻿
+
+@{
+    ViewBag.Title = "IF E-Learningシステム";
+}
+
+
+<body>
+    <div id="main" class="page">
+        <h2>カテゴリ名編集</h2>
+
+        @using (Html.BeginForm())
+        {
+            <input type="hidden" name="categoryID" id="categoryID" />
+            if (ViewData["message"] != null)
+            {
+                <h3>
+                    @ViewData["message"]
+                </h3>
+            }
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                        </th>
+                        <th>
+                            カテゴリ名
+                        </th>
+                        <th>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        for (int i = 0; i < Model.Count; i++)
+                        {
+                            // id用文字列
+                            string categoryID = "categoryID" + i.ToString();
+                            string c = "c" + i.ToString();
+                            string s = "s" + i.ToString();
+                            string del = "del" + i.ToString();
+                            string l = "l" + i.ToString();
+                            string it = "i" + i.ToString();
+                            string d = "d" + i.ToString();
+                            <tr>
+                                <td>
+                                    <label id="@categoryID" style="display: none">@Model[i].CategoryID</label>
+                                    <input id="@c" type="button" value="編集" onclick="changeTextBox(@i)" />
+                                    <input id="@s" type="button" value="変更" style="display: none;" onclick="setTextBox(@i)" />
+                                    <input id="@del" type="submit" name="submit" value="削除" onclick="deleteCategory(@Model[i].CategoryID);" />
+                                </td>
+                                <td>
+                                    <label id="@l">@Model[i].CategoryName</label>
+                                    <input type="text" id="@it" name="changeCategory" value="" style="display: none" onfocus="focusText('@it')" />
+                                    <input id="@d" type="hidden" name="categoryID" value="@Model[i].CategoryID" />
+                                </td>
+                            </tr>
+                        }
+                    }
+                    <tr>
+                        <td>
+                            <input type="submit" name="submit" value="追加" />
+                        </td>
+                        <td>
+                            @Html.TextBox("newCategory", null, new { id = "newCategory", autofocus = "autofocus", onfocus = "focusText('newCategory')" })
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            @section Scripts{
+                <script type="text/javascript">
+                    function changeTextBox(id) {
+                        // 課題名を編集するためにテキストボックスを表示する
+                        $('#l' + id).css('display', 'none');
+                        $('#i' + id).val($('#l' + id).text()).css('display', '').focus();
+                        // 決定ボタンを表示
+                        $('#c' + id).css('display', 'none');
+                        $('#s' + id).css('display', '');
+                    }
+
+                    function setTextBox(id) {
+                        var change = $('#i' + id).val();
+                        var cid = $('#d' + id).val();
+                        var button = $('#s' + id).val();
+                        // 課題名変更の決定
+                        $.ajax({
+                            type: "POST",
+                            url: '/Admin/EditCategories',
+                            data: {
+                                changeCategory: change,
+                                categoryID: cid,
+                                button: button,
+                                id: id
+                            },
+                            success: function (id) {
+                                // 課題名の変更確定
+                                $('#l' + id).text($('#i' + id).val()).css('display', '');
+                                $('#i' + id).css('display', 'none');
+                                // 編集ボタンを表示
+                                $('#s' + id).css('display', 'none');
+                                $('#c' + id).css('display', '');
+                            },
+                            error: function () {
+                                // 失敗
+                                // 課題名の変更なし
+                                $('#l' + id).css('display', '');
+                                $('#i' + id).css('display', 'none');
+                                // 編集ボタンを表示
+                                $('#s' + id).css('display', 'none');
+                                $('#c' + id).css('display', '');
+                                // アラート
+                                alert("カテゴリ名の変更に失敗しました。");
+                            }
+                        });
+                    }
+
+                    function deleteCategory(id) {
+                        if (window.confirm('削除してよろしいですか？')) {
+                            document.getElementById('categoryID').setAttribute('value', id);
+                            return true;
+                        }
+                        else {
+                            window.alert('カテゴリの削除がキャンセルされました');
+                            return false;
+                        }
+                    }
+
+                    function focusText(id) {
+                        document.getElementById(id).select();
+                    }
+                </script>
+            }
+        }
+    </div>
+</body>
+

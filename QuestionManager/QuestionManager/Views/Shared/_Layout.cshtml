@@ -1,0 +1,57 @@
+﻿@using Microsoft.AspNet.Identity
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    @*現行システムより、なくても動くけど念のためコメントアウト*@
+    @*<script src="~/Scripts/modernizr-2.6.2.js"></script>*@
+</head>
+<body>
+    <div class="page">
+        <div id="header">
+            <div id="title">
+                @{ if (ViewData["Title"] == null)
+                    {
+                        <h1>IF E-Learningシステム</h1>
+                    }
+                    else
+                    {
+                        <h1>@ViewData["Title"]</h1>
+                    }
+                }
+            </div>
+            @*ログオン、ログアウトを管理*@
+            @Html.Partial("_LoginPartial")
+
+            <div id="menucontainer">
+                <ul id="menu">
+                    <li>@Html.ActionLink("ホーム", "LogOn", "Account")</li>
+
+                    @*利用者&管理者用ホーム*@
+                    @if (Request.IsAuthenticated && HttpContext.Current.User.IsInRole("User") && HttpContext.Current.User.IsInRole("Admin"))
+                    {
+                        <li>@Html.ActionLink("パスワード変更", "ChangePassword", "Account")</li>
+                        <li>@Html.ActionLink("メールアドレス変更", "ChangeEmail", "Account") </li>
+                    }
+                    @*管理者ホーム*@
+                    @if (Request.IsAuthenticated && HttpContext.Current.User.IsInRole("Admin"))
+                    {
+                        <li>@Html.ActionLink("管理用", "AdminMenu", "Admin") </li>
+                    }
+                </ul>
+            </div>
+        </div> @*headerここまで*@
+    </div>
+    @RenderBody()
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>
+
+

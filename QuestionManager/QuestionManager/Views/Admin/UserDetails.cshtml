@@ -1,0 +1,56 @@
+﻿@model QuestionManager.Models.AdminModels.DisplayAdminDetails
+
+<body>
+    <div id="main" class="page">
+        <h2>解答履歴 - @Model.CategoryName</h2>
+        <p>@Model.UserName さん解答履歴の解答です。</p>
+        <p>◆@Model.SubjectName<br />┗@Model.ChallengeTime 回目</p>
+        @if (Model.AdminDetailsList.Count() < 1)
+        {
+            <p>受験の履歴がありませんでした。<br />管理者に報告してください。</p>
+        }
+        else
+        {
+            <table>
+                <thead>
+                    <tr>
+                        <th>問題</th>
+                        <th>解答</th>
+                        <th>○or×</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model.AdminDetailsList)
+                    {
+                        <tr>
+                            <td>@item.DisplayQuestion</td>
+                            <td>@item.UserAnswer</td>
+                            <td>
+                                @if (item.IsSuccess == true)
+                                {
+                                    // 合否判定後、正解した問題には〇を表示
+                                    <span class="mark">○</span>
+                                }
+                                else
+                                {
+                                    // 不正解なら×
+                                    <span class="mark">×</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+        <br /><br />
+        @Html.ActionLink("戻る", "userSummary", new
+        {
+            userID = Model.UserID,
+            subjectID = Model.SubjectID,
+            userName = Model.UserName,
+            categoryID = Model.CategoryID
+        })
+    </div>
+</body>

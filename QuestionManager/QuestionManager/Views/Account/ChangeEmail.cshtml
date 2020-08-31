@@ -1,0 +1,58 @@
+﻿@model QuestionManager.Models.ChangeEmail
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>メールアドレスの変更</title>
+</head>
+<body>
+    <div class="page">
+        <div id="main">
+            <h2>メールアドレスの変更</h2>
+            @using (Html.BeginForm("ChangeEmail", "Account", FormMethod.Post, new { @id = "changeEmailForm"}))
+            {
+                <div>
+                    テキストボックスにメールアドレスを入力して、「変更」ボタンを押してください。
+                    <br />
+                    メールアドレスを変更します。
+                    <br />
+                    <br />
+
+                    <table id="mail" name="mail">
+                        <tr><td>@Html.LabelFor(m => m.oldmail)</td><td>@Html.TextBox("oldmail")</td></tr>
+                        <tr><td>@Html.LabelFor(m => m.newmail)</td><td>@Html.TextBox("newmail")</td></tr>
+                    </table>
+                    <br />
+                </div>
+
+                <input type="submit" name="submit" value="変更" />
+                <br />
+                <br />
+
+                @ViewData["status"]
+            }
+            <div id="footer">
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.validate.min.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#changeEmailForm").validate({
+                rules: {
+                    oldmail: { required: true, email: true },
+                    newmail: { required: true, email: true }
+                },
+                messages: {
+                    oldmail: { required: "メールアドレスを入力してください", email: "正しいメールアドレスを入力してください" },
+                    newmail: { required: "メールアドレスを入力してください", email: "正しいメールアドレスを入力してください" }
+                }
+            });
+        })
+    </script>
+</body>
+</html>
